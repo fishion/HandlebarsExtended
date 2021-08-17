@@ -1,6 +1,6 @@
 {
   "name": "handlebarsextended",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Adds helpers I always want in Handlebars",
   "main": "index.js",
   "scripts": {
