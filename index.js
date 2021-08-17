@@ -53,7 +53,7 @@ module.exports = ({
 
     // pull data for each page, if there is any needed
     try {
-      var pageData = require(path.join(controllerPath, fileObj.name));
+      var pageData = require(path.join(appRoot, controllerPath, fileObj.name));
     } catch (e) {console.log(`  - no data for ${fileObj.name}`)}
 
     // render template
