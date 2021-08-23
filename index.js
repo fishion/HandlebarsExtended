@@ -45,20 +45,24 @@ module.exports = ({
 
 
   // render to a file
-  hbs.render = (templateName, templateParams) => {
+  hbs.render = (subdir=undef, templateName, templateParams) => {
     // pull apart template path e.g. myfile.html.hbs
     const outFile = path.basename(templateName, '.hbs');
-    const fileObj = path.parse(outFile) 
-    console.log(`Rendering ${fileObj.name}`)
+    const outPath = path.join(subdir, outFile);
+    const fileObj = path.parse(outFile);
+    console.log(`Rendering ${outPath}`)
 
     // pull data for each page, if there is any needed
     try {
-      var pageData = require(path.join(appRoot, controllerPath, fileObj.name));
-    } catch (e) {console.log(`  - no data for ${fileObj.name}`)}
+      var pageData = require(path.join(appRoot, controllerPath, subdir,fileObj.name));
+      console.log(`  - found controller for ${outPath}`)
+    } catch (e) {
+      console.log(`  - no controller for ${outPath}`)
+    }
 
     // render template
-    const template = hbs.compile( fs.readFileSync(path.join(appRoot, pagesPath, templateName),'utf8').toString() );
-    fs.writeFileSync(path.join(appRoot, outputPath, outFile), template({
+    const template = hbs.compile( fs.readFileSync(path.join(appRoot, pagesPath, subdir, templateName),'utf8').toString() );
+    fs.writeFileSync(path.join(appRoot, outputPath, subdir, outFile), template({
       pagename : {
         name : fileObj.name,
         is : { [fileObj.name] : true },
@@ -66,14 +70,21 @@ module.exports = ({
       ...templateParams,
       ...pageData
     }))
-    console.log(`  - finished rendering ${fileObj.name}`)
+    console.log(`  - finished rendering ${outPath}`)
   }
 
-  hbs.buildSite = (templateParams) => {
+  hbs.buildSite = (templateParams, subdir='') => {
     // read file lists & render
-    fs.readdirSync(path.join(appRoot, pagesPath), {withFileTypes: true})
+    const fileobs = fs.readdirSync(path.join(appRoot, pagesPath, subdir), {withFileTypes: true})
+
+    fileobs
       .filter(item => !item.isDirectory())
-      .forEach(file => hbs.render(file.name, templateParams))
+      .forEach(file => hbs.render(subdir, file.name, templateParams))
+
+    // recurse into any dirs
+    fileobs
+      .filter(item => item.isDirectory())
+      .forEach(dir => hbs.buildSite(templateParams, dir.name))
   }
 
   return hbs;
