@@ -3,6 +3,7 @@
 const fs = require('fs')
   , path = require('path')
   , Handlebars = require('handlebars')
+  , hbx = Handlebars
 
 module.exports = ({
   appRoot,
@@ -13,26 +14,22 @@ module.exports = ({
   includesPath   = 'templates/partials/includes',
   extension      = 'html'
 }) => {
-  const hbs = Handlebars
-
   // add helpers
-  hbs.registerHelper('wrap', function(wrapper, options) {
-    // if performance was a consideration, may be worth pre-compiling and caching wrappers
-    const compiledWrapper = hbs.compile(
+  hbx.registerHelper('wrap', function(wrapper, options) {
+    const compiledWrapper = hbx.compile(
       fs.readFileSync(`${path.join(appRoot, wrappersPath, wrapper)}.${extension}.hbs`, 'utf8').toString()
     )
     return compiledWrapper({ ...this, ...options.hash, content : options.fn(this) })
   })
 
-  hbs.registerHelper('include', function(include, options) {
-    // if performance was a consideration, may be worth pre-compiling and caching includes
-    const compiledInclude = hbs.compile(
+  hbx.registerHelper('include', function(include, options) {
+    const compiledInclude = hbx.compile(
       fs.readFileSync(`${path.join(appRoot, includesPath, include)}.${extension}.hbs`, 'utf8').toString()
     )
     return compiledInclude({ ...this, ...options.hash })
   })
 
-  hbs.registerHelper('math', (lvalue, operator, rvalue) => {
+  hbx.registerHelper('math', (lvalue, operator, rvalue) => {
     lvalue = parseFloat(lvalue)
     rvalue = parseFloat(rvalue)
     return {
@@ -45,7 +42,7 @@ module.exports = ({
   })
 
   // render to a file
-  hbs.render = (subdir = undefined, templateName, templateParams) => {
+  hbx.render = (subdir = undefined, templateName, templateParams) => {
     // pull apart template path e.g. myfile.html.hbs
     const outFile = path.basename(templateName, '.hbs')
       , outPath = path.join(subdir, outFile)
@@ -62,7 +59,7 @@ module.exports = ({
     }
 
     // render template
-    const template = hbs.compile(fs.readFileSync(path.join(appRoot, pagesPath, subdir, templateName), 'utf8').toString())
+    const template = hbx.compile(fs.readFileSync(path.join(appRoot, pagesPath, subdir, templateName), 'utf8').toString())
       , outFilePath = path.join(appRoot, outputPath, subdir, outFile)
       , outDirName = path.dirname(outFilePath)
     if (!fs.existsSync(outDirName)) {
@@ -79,19 +76,19 @@ module.exports = ({
     console.log(`  - finished rendering ${outPath}`)
   }
 
-  hbs.buildSite = (templateParams, subdir = '') => {
+  hbx.buildSite = (templateParams, subdir = '') => {
     // read file lists & render
     const fileobs = fs.readdirSync(path.join(appRoot, pagesPath, subdir), { withFileTypes : true })
 
     fileobs
       .filter(item => !item.isDirectory())
-      .forEach(file => hbs.render(subdir, file.name, templateParams))
+      .forEach(file => hbx.render(subdir, file.name, templateParams))
 
     // recurse into any dirs
     fileobs
       .filter(item => item.isDirectory())
-      .forEach(dir => hbs.buildSite(templateParams, dir.name))
+      .forEach(dir => hbx.buildSite(templateParams, dir.name))
   }
 
-  return hbs
+  return hbx
 }
