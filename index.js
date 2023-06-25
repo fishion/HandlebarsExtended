@@ -11,6 +11,7 @@ module.exports = ({
   pagesPath      = 'templates/pages',
   wrappersPath   = "templates/partials/wrappers",
   includesPath   = "templates/partials/includes",
+  extension      = "html"
 }) => {
   const hbs = Handlebars
 
@@ -18,7 +19,7 @@ module.exports = ({
   hbs.registerHelper("wrap", function(wrapper, options) {
     // if performance was a consideration, may be worth pre-compiling and caching wrappers
     const compiledWrapper = hbs.compile(
-      fs.readFileSync(`${path.join(appRoot, wrappersPath, wrapper)}.html.hbs`,'utf8').toString()
+      fs.readFileSync(`${path.join(appRoot, wrappersPath, wrapper)}.${extension}.hbs`,'utf8').toString()
     );
     return compiledWrapper({ ...this, ...options.hash, content : options.fn(this) })
   });
@@ -26,7 +27,7 @@ module.exports = ({
   hbs.registerHelper("include", function(include, options) {
     // if performance was a consideration, may be worth pre-compiling and caching includes
     const compiledInclude = hbs.compile(
-      fs.readFileSync(`${path.join(appRoot, includesPath, include)}.html.hbs`,'utf8').toString()
+      fs.readFileSync(`${path.join(appRoot, includesPath, include)}.${extension}.hbs`,'utf8').toString()
     );
     return compiledInclude({ ...this, ...options.hash})
   });
@@ -54,7 +55,7 @@ module.exports = ({
 
     // pull data for each page, if there is any needed
     try {
-      var pageData = require(path.join(appRoot, controllerPath, subdir,fileObj.name));
+      var pageData = require(path.join(appRoot, controllerPath, subdir, fileObj.name));
       console.log(`  - found controller for ${outPath}`)
     } catch (e) {
       console.log(`  - no controller for ${outPath}`)
@@ -62,7 +63,12 @@ module.exports = ({
 
     // render template
     const template = hbs.compile( fs.readFileSync(path.join(appRoot, pagesPath, subdir, templateName),'utf8').toString() );
-    fs.writeFileSync(path.join(appRoot, outputPath, subdir, outFile), template({
+    const outFilePath = path.join(appRoot, outputPath, subdir, outFile)
+    const outDirName = path.dirname(outFilePath);
+    if (!fs.existsSync(outDirName)) {
+      fs.mkdirSync(outDirName, { recursive: true })
+    }
+    fs.writeFileSync(outFilePath, template({
       pagename : {
         name : fileObj.name,
         is : { [fileObj.name] : true },
