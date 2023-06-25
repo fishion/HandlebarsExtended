@@ -1,5 +1,5 @@
-"use strict"
+'use strict'
 
 module.exports = {
-    controllerVar : 'Sub page Controller Var'
-};
+  controllerVar : 'Sub page Controller Var'
+}
