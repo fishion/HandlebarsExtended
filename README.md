@@ -2,9 +2,8 @@
 
 ```
 const path = require('path');
-const appRoot = path.resolve(__dirname, '..');
 const hbx = require('HandlebarsExtended')({
-  appRoot : appRoot
+  appRoot : path.resolve(__dirname, '..')
 });
 
 const config = require(path.resolve(appRoot, 'config.json'));

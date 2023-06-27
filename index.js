@@ -44,9 +44,9 @@ module.exports = ({
   // render to a file
   hbx.render = (subdir = undefined, templateName, templateParams) => {
     // pull apart template path e.g. myfile.html.hbs
-    const outFile = path.basename(templateName, '.hbs')
-      , outPath = path.join(subdir, outFile)
-      , fileObj = path.parse(outFile)
+    const outFile = path.basename(templateName, '.hbs') // myfile.html
+      , outPath = path.join(subdir, outFile) // midir/myfile.html
+      , fileObj = path.parse(outFile) // object with useful properties
     console.log(`Rendering ${outPath}`)
 
     // pull data for each page, if there is any needed
