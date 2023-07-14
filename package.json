@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint . --ext .js",
-    "lintfix": "eslint . --ext .js --fix"
+    "lintfix": "eslint . --ext .js --fix",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "eslint": "^8.43.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-jest": "^27.2.2",
-    "jest": "^29.5.0"
+    "jest": "^29.5.0",
+    "typescript": "^5.1.6"
   }
 }
