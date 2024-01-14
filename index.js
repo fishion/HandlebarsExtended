@@ -41,6 +41,10 @@ module.exports = ({
     }[operator]
   })
 
+  hbx.registerHelper('json', val => {
+    return JSON.parse(val)
+  })
+
   // render to a file
   hbx.render = (subdir = undefined, templateName, templateParams) => {
     // pull apart template path e.g. myfile.html.hbs

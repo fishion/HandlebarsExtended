@@ -29,6 +29,11 @@ test('test added math helper', () => {
   const template = hbx.compile('{{math num1 "+" num2}}')
   expect(template({ num1 : 10, num2 : 20 })).toBe('30')
 })
+const jsonStr = { a : [1, 2, 3], b : ['foo', 'bar'] }
+test('test added json helper', () => {
+  const template = hbx.compile(`{{#each (json '${JSON.stringify(jsonStr)}') }}{{@key}}{{#each this}}{{this}}{{/each}}{{/each}}`)
+  expect(template()).toBe('a123bfoobar')
+})
 
 test('Test rendering to file', () => {
   expect(typeof hbx.render).toBe('function')
