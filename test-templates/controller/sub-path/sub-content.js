@@ -1,5 +1,3 @@
-'use strict'
-
-module.exports = {
-  controllerVar : 'Sub page Controller Var'
+export default {
+  controllerVar: "Sub page Controller Var",
 }

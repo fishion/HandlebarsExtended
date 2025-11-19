@@ -1,5 +1,3 @@
-'use strict'
-
-module.exports = {
-  controllerVar : 'Controller Var'
+export default {
+  controllerVar: "Controller Var",
 }

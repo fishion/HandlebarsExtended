@@ -1,21 +1,42 @@
 {
-  // Change this to match your project
-  "include": ["index.js"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
-    // Tells TypeScript to read JS files, as
-    // normally they are ignored as source files
-    "allowJs": true,
-    // Generate d.ts files
+    "target": "ES2020",
+    "module": "nodenext",
+    "lib": ["ES2020", "DOM"],
     "declaration": true,
-    // This compiler run should
-    // only output d.ts files
-    "emitDeclarationOnly": true,
-    // Types should go into this directory.
-    // Removing this would place the .d.ts files
-    // next to the .js files
-    // "outDir": "dist",
-    // go to js file when using IDE functions like
-    // "Go to Definition" in VSCode
-    "declarationMap": true
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+
+    /* Module Resolution Options */
+    "moduleResolution": "nodenext" /* 'nodenext' for modern versions of Node.js */,
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    "isolatedModules": true /* Ensure each file can be safely transpiled without relying on other imports */,
+
+    /* Advanced Options */
+    "resolveJsonModule": true /* Include modules imported with '.json' extension */,
+
+    /* Style choices */
+    "removeComments": true /* Do not emit comments to output. */,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
+    "noImplicitThis": true /* Raise error on 'this' expressions with an implied 'any' type. */,
+    "strictNullChecks": true /* Enable strict null checks. */,
+    "strictFunctionTypes": true /* Enable strict checking of function types. */,
+    "strictBindCallApply": true /* Enable strict 'bind', 'call', and 'apply' methods on functions. */,
+    "strictPropertyInitialization": true /* Enable strict checking of property initialization in classes. */,
+    "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
+
+    /* Additional Checks */
+    "noUnusedLocals": true /* Report errors on unused locals. */,
+    "noUnusedParameters": true /* Report errors on unused parameters. */,
+    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */
   }
 }
