@@ -35,9 +35,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "rm -rf dist",
-    "build": "npm run clean && tsc",
-    "prepare": "husky",
-    "postinstall": "npm run build"
+    "build": "tsc",
+    "prepare": "npm run build && husky"
   },
   "dependencies": {
     "handlebars": "^4.7.8"
