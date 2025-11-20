@@ -4,6 +4,9 @@ dist/
 # Node modules
 node_modules/
 
+# IaC artefacts
+tf/.terraform
+
 # Logs
 *.log
 npm-debug.log*
@@ -25,3 +28,6 @@ Thumbs.db
 
 # Test coverage
 coverage/
+
+# wip
+design/*
